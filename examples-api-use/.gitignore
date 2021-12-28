@@ -1,3 +1,4 @@
+*.o
 demo
 minimal-example
 text-example
@@ -5,3 +6,4 @@ c-example
 clock
 scrolling-text-example
 ledcat
+maze

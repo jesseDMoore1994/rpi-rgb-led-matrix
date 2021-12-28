@@ -1,7 +1,22 @@
-CFLAGS=-Wall -O3 -g -Wextra -Wno-unused-parameter
+# DEBUG option to adjust GCC flags to produce executables with GDB debug symbols.
+DEBUG ?=
+ifneq ($(DEBUG),)
+DEBUG_PREPROC = -g3 -O0 -ggdb
+else
+DEBUG_PREPROC = -O3 -g
+endif
+
+# DEBUG_PRINTS option which if defined as non empty adds the DEBUG_PRINTS variable
+# to the preprocessor definitions
+DEBUG_PRINTS ?=
+ifneq ($(DEBUG_PRINTS),)
+DEBUG_PREPROC += -DDEBUG_PRINTS
+endif
+
+CFLAGS=-Wall -Wextra -Wno-unused-parameter $(DEBUG_PREPROC)
 CXXFLAGS=$(CFLAGS)
-OBJECTS=demo-main.o minimal-example.o c-example.o text-example.o scrolling-text-example.o clock.o ledcat.o input-example.o pixel-mover.o
-BINARIES=demo minimal-example c-example text-example scrolling-text-example clock ledcat input-example pixel-mover
+OBJECTS=demo-main.o minimal-example.o c-example.o text-example.o scrolling-text-example.o clock.o ledcat.o input-example.o pixel-mover.o maze.o
+BINARIES=demo minimal-example c-example text-example scrolling-text-example clock ledcat input-example pixel-mover maze
 
 # Where our library resides. You mostly only need to change the
 # RGB_LIB_DISTRIBUTION, this is where the library is checked out.
@@ -31,6 +46,7 @@ scrolling-text-example : scrolling-text-example.o
 clock : clock.o
 ledcat : ledcat.o
 pixel-mover : pixel-mover.o
+maze : maze.o
 
 # All the binaries that have the same name as the object file.q
 % : %.o $(RGB_LIBRARY)
